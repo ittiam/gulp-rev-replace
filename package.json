@@ -3,7 +3,7 @@
   "version": "0.4.4",
   "description": "Rewrite occurences of filenames which have been renamed by gulp-rev",
   "main": "index.js",
-  "repository": "jamesknelson/gulp-rev-replace",
+  "repository": "ittiam/gulp-rev-replace",
   "scripts": {
     "test": "mocha"
   },
@@ -16,9 +16,9 @@
     "asset"
   ],
   "author": {
-    "name": "James K Nelson",
-    "email": "james@numbattech.com",
-    "url": "http://jamesknelson.com"
+    "name": "ittiam",
+    "email": "ittiamc@gmail.com",
+    "url": ""
   },
   "engines": {
     "node": ">=0.10.0"
