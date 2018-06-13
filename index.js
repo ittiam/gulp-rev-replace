@@ -18,6 +18,10 @@ function plugin(options) {
     options.canonicalUris = true;
   }
 
+  if (options.hash) {
+    options.hash = new Date().getTime();
+  }
+
   options.prefix = options.prefix || '';
 
   options.replaceInExtensions = options.replaceInExtensions || ['.js', '.css', '.html', '.hbs'];
@@ -36,6 +40,7 @@ function plugin(options) {
     // Collect renames from reved files.
     if (file.revOrigPath) {
       renames.push({
+        revHash: file.revHash || options.hash,
         unreved: fmtPath(file.revOrigBase, file.revOrigPath),
         reved: options.prefix + fmtPath(file.base, file.path)
       });
@@ -81,11 +86,21 @@ function plugin(options) {
         renames.forEach(function replaceOnce(rename) {
           var unreved = options.modifyUnreved ? options.modifyUnreved(rename.unreved) : rename.unreved;
           var reved = options.modifyReved ? options.modifyReved(rename.reved) : rename.reved;
-          contents = contents.split(unreved).join(reved);
+
+          if (options.hash) {
+            contents = contents.split(unreved).join(unreved + '?v=' + rename.revHash);
+          } else {
+            contents = contents.split(unreved).join(reved);
+          }
+
           if (options.prefix) {
             contents = contents.split('/' + options.prefix).join(options.prefix + '/');
           }
         });
+
+        if (options.hash && file.revOrigPath) {
+          file.path = file.revOrigPath;
+        }
 
         file.contents = new Buffer(contents);
         stream.push(file);
