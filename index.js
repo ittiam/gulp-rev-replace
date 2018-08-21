@@ -88,7 +88,10 @@ function plugin(options) {
           var reved = options.modifyReved ? options.modifyReved(rename.reved) : rename.reved;
 
           if (options.hash) {
-            contents = contents.split(unreved).join((unreved.split('?v=')[0]) + '?v=' + rename.revHash);
+            var fn = unreved + '?v=' + rename.revHash;
+            if (contents.indexOf(fn) < 0) {
+              contents = contents.split(unreved).join(fn);
+            }
           } else {
             contents = contents.split(unreved).join(reved);
           }
